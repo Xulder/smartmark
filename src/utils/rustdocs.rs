@@ -1,7 +1,7 @@
 use percent_encoding::utf8_percent_encode;
 
 pub fn construct_rustdocs_url(query: &str) -> String {
-    if query.chars().nth(4) == Some('?') {
+    if query.chars().nth(3) == Some('?') {
         format!(
             "https://docs.rs/releases/search?query={}",
             utf8_percent_encode(&query[4..], super::FRAGMENT).to_string()
