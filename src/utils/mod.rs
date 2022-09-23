@@ -3,6 +3,7 @@ use percent_encoding::{AsciiSet, CONTROLS};
 pub mod duckduck;
 pub mod github;
 pub mod google;
+pub mod rustdocs;
 
 const FRAGMENT: &AsciiSet = &CONTROLS.add(b' ').add(b'"').add(b'<').add(b'>').add(b'`');
 

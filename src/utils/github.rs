@@ -1,4 +1,4 @@
-use percent_encoding::{utf8_percent_encode, AsciiSet, CONTROLS};
+use percent_encoding::utf8_percent_encode;
 
 pub fn construct_github_url(query: &str) -> String {
     if query == "gh" {
