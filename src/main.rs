@@ -15,8 +15,8 @@ fn search(cmd: String) -> Redirect {
     let command = utils::get_cmd_from_query(&cmd);
 
     let redirect_url = match command {
-        "go" => String::from("https://google.com"),
-        "im" => String::from("https://images.google.com"),
+        "go" => utils::google::construct_google_search_url(&cmd),
+        "im" => utils::google::construct_google_image_search_url(&cmd),
         "gh" => utils::github::construct_github_url(&cmd),
         _ => utils::duckduck::construct_ddg_search_url(&cmd),
     };
