@@ -5,6 +5,7 @@ use rocket::response::Redirect;
 extern crate rocket;
 
 mod utils;
+mod config;
 
 #[get("/")]
 fn index() -> &'static str {

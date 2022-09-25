@@ -8,3 +8,6 @@ edition = "2021"
 [dependencies]
 rocket = "0.5.0-rc.2"
 percent-encoding = "2.1.0"
+serde = { version = "1.0", features = ["derive"] }
+toml = "0.5.9"
+url = { version = "2.3.1", features = ["serde"] }
