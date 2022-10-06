@@ -4,8 +4,8 @@ use rocket::response::Redirect;
 #[macro_use]
 extern crate rocket;
 
-mod utils;
 mod config;
+mod utils;
 
 #[get("/")]
 fn index() -> &'static str {
@@ -16,6 +16,7 @@ fn index() -> &'static str {
 fn search(cmd: String) -> Redirect {
     let command = utils::get_cmd_from_query(&cmd);
 
+    // code needs to be distinguishable from comments
     let redirect_url = match command {
         "rs" => utils::rustdocs::construct_rustdocs_url(&cmd),
         "go" => utils::google::construct_google_search_url(&cmd),

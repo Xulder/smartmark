@@ -1,12 +1,14 @@
 use percent_encoding::utf8_percent_encode;
 
 pub fn construct_rustdocs_url(query: &str) -> String {
+    // if you add a `?` before the crate name, it will do a search query
     if query.chars().nth(3) == Some('?') {
         format!(
             "https://docs.rs/releases/search?query={}",
             utf8_percent_encode(&query[4..], super::FRAGMENT).to_string()
         )
     } else {
+        // Otherwise it will attempt to go straight to the docs page, even if it doesn't exist
         format!(
             "https://docs.rs/{}",
             // crate names can't have spaces, but this works with ones with `-` as well
