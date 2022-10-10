@@ -4,8 +4,8 @@ use rocket::response::Redirect;
 #[macro_use]
 extern crate rocket;
 
-mod utils;
 mod config;
+mod utils;
 
 #[get("/")]
 fn index() -> &'static str {
@@ -21,6 +21,7 @@ fn search(cmd: String) -> Redirect {
         "go" => utils::google::construct_google_search_url(&cmd),
         "im" => utils::google::construct_google_image_search_url(&cmd),
         "gh" => utils::github::construct_github_url(&cmd),
+        "pdb" => utils::protondb::construct_protondb_search_url(&cmd),
         _ => utils::duckduck::construct_ddg_search_url(&cmd),
     };
 
