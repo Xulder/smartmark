@@ -1,0 +1,28 @@
+# Query contents are appended to urls
+# Might add ability to substitute in multiple spots
+# Would like to implement sub page searching like so:
+# gh xulder/smartmark ?construct_url
+default_search = "https://duckduckgo.com/"
+
+[[shortcuts]]
+keyword = "rs"
+url = "https://docs.rs/"
+search_url = "https://docs.rs/releases/search?query="
+
+[[shortcuts]]
+keyword = "go"
+url = "https://google.com/search?q="
+
+[[shortcuts]]
+keyword = "im"
+url = "https://google.com/search?tbm=isch&q="
+
+[[shortcuts]]
+keyword = "gh"
+url = "https://github.com/"
+search_url = "https://github.com/search?q="
+
+[[shortcuts]]
+keyword = "pdb"
+url = "https://protondb.com"
+search_url = "https://www.protondb.com/search?q="

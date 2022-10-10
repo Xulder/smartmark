@@ -1,4 +1,4 @@
-use percent_encoding::{AsciiSet, CONTROLS};
+use percent_encoding::{utf8_percent_encode, AsciiSet, CONTROLS};
 
 use self::config::{Config, Shortcut};
 
@@ -9,10 +9,7 @@ const FRAGMENT: &AsciiSet = &CONTROLS.add(b' ').add(b'"').add(b'<').add(b'>').ad
 /// Keywords should never be more than one word, should only contain
 /// alphanumerics, and should only use the `?` suffix at the end of the keyword.
 ///
-/// `?` at the end of the keyword will only work if the search_url field is
-/// filled. There are cases where you'd only care to search a site, at which
-/// point you could simply use the regular substitution by including the search
-/// query in the url and placing the `%s` marker after the `=`.
+/// `?` at the end of the keyword will only work if the search_url field is filled.
 pub fn get_cmd_from_query(query_string: &str) -> &str {
     // Just returns bare kw from query
     if query_string.contains(' ') {
@@ -23,10 +20,49 @@ pub fn get_cmd_from_query(query_string: &str) -> &str {
 }
 
 /// Takes a query string and a shortcut
-pub fn construct_url(query: &str, shortcut: &Shortcut) -> String {
-    // NOTE: The query will include the keyword. Pretty easy to snip that out.
-    // This also makes it easy to check for a suppending `?` or other suffixes I think of
-    return shortcut.url.clone();
+pub fn construct_url(query: &str, config: &Config) -> String {
+    let mut kw = get_cmd_from_query(query).to_string();
+    let query_contents = query.strip_prefix(&format!("{} ", &kw));
+    let has_search_suffix = kw.ends_with('?');
+    if has_search_suffix {
+        kw.pop();
+    }
+
+    if let Some(shortcuts) = &config.shortcuts.as_ref() {
+        // TODO: Implement this all with a hashmap so this for loop can go.
+        // NOTE: This will also declutter how the config structs are handled...
+        // NOTE: And make implementing cmd and reload features easier
+        for sc in shortcuts.iter() {
+            if sc.keyword == kw && has_search_suffix {
+                if query_contents.is_none() {
+                    eprintln!("Cannot use search suffix `?` with an empty query")
+                } else {
+                    let sc_search_url = sc.search_url.clone().expect(&format!("Search suffix `?` does not work for shortcut `{}` because the `search_url` field was not added", sc.keyword));
+                    return format!(
+                        "{}{}",
+                        sc.search_url.clone().expect(&format!("Search suffix `?` does not work for shortcut `{}` because the `search_url` field was not added", sc.keyword)),
+                        utf8_percent_encode(query_contents.unwrap(), FRAGMENT).to_string()
+                    )
+                    .to_string();
+                }
+            } else if sc.keyword == kw && !has_search_suffix {
+                if query_contents.is_some() {
+                    return format!(
+                        "{}{}",
+                        &sc.url,
+                        utf8_percent_encode(query_contents.unwrap(), FRAGMENT).to_string()
+                    )
+                    .to_string();
+                }
+                return sc.url.clone();
+            }
+        }
+    }
+    return format!(
+        "{}{}",
+        &config.default_search,
+        utf8_percent_encode(&query, FRAGMENT).to_string()
+    );
 }
 
 #[cfg(test)]

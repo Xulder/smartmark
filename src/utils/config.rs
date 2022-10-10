@@ -29,9 +29,9 @@ mod test {
 
     #[test]
     fn test_read_user_config() {
-        let config: Config = read_user_config("./test.toml");
+        let config: Config = read_user_config("./config.toml");
 
-        assert_eq!(config.default_search.unwrap(), "https://duckduckgo.com/");
+        assert_eq!(config.default_search, "https://duckduckgo.com/");
         assert_eq!(
             config.shortcuts.unwrap().contains(&Shortcut {
                 keyword: "rs".to_string(),
@@ -42,10 +42,3 @@ mod test {
         );
     }
 }
-
-// TODO: Probably will want to do some work using the url crate to allow for simply typing the keyword to omit the
-//          search query
-// NOTE: The above could be done by using URL to retrieve the root url, but this might not have desired behavior for
-//          some sites
-// TODO: Complete refractor. utils/mod.rs should probably be mostly replaced with this code.
-//
