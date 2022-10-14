@@ -18,9 +18,7 @@ pub fn read_user_config<P>(path: P) -> Config
 where
     P: AsRef<Path>,
 {
-    let config: Config =
-        toml::from_str(&fs::read_to_string(path).expect("Trouble reading config file")).unwrap();
-    config
+    toml::from_str(&fs::read_to_string(path).expect("Trouble reading config file")).unwrap()
 }
 
 #[cfg(test)]
