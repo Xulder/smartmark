@@ -17,7 +17,7 @@ mod utils;
 const CONFIG_TEMPLATE: &[u8] = r#"# You can change your default search engine here.
 default_search = "https://duckduckgo.com/"
 
-# Anything typed after a given keyword will be appended to the `url` field and redirect you
+# Anything typed after a given keyword will be appended to the `url` field.
 [[shortcuts]]
 keyword = "rs"
 url = "https://docs.rs/"
@@ -43,13 +43,15 @@ fn rocket() -> _ {
         config_path.push(env::var("LOCALAPPDATA").unwrap());
     } else if cfg!(unix) {
         config_path.push(env::var("XDG_CONFIG_HOME").unwrap());
+    } else if cfg!(macos) {
+        config_path.push(format!("{}/.config", env::var("HOME").unwrap()));
     }
 
     config_path.push("smartmark");
 
     if !config_path.exists() {
         fs::create_dir(&config_path)
-            .expect("Erroc creating smartmark local configuration directory");
+            .expect("Error creating smartmark local configuration directory");
     }
 
     config_path.push("config.toml");
