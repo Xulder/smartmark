@@ -6,6 +6,9 @@ use std::{
     path::PathBuf,
 };
 
+use clap::Parser;
+
+use cli::Cli;
 use rocket::{response::Redirect, State};
 use utils::config::{self, Config};
 

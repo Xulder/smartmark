@@ -18,6 +18,7 @@ search_url = "https://docs.rs/releases/search?query="
 "#
 .as_bytes();
 
+// Might see about making the contents of this `Arc` contained for mutability
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Config {
     pub default_search: String,
